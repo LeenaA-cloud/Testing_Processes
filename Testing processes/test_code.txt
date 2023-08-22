@@ -1,0 +1,104 @@
+*** Settings ***
+Library                 SeleniumLibrary
+Test Setup              Open Browser    https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+Test Teardown           Close Browser
+
+*** Variables ***
+${MUNICIPALITY}         Akaa
+${ELECTORAL DISTRICT}   Electoral District of Uusimaa
+${CANDIDATE NUMBER}     45
+${AGE}                  42
+${LANGUAGE}             Finnish
+${OCCUPATION}           IT-asiantuntija
+${EDUCATION}            University degree
+${POLITICAL IDOL}       Poliittiset esikuvani ovat omat vanhempani ja isovanhempani.
+${ELECTION BUDGET}      1,000-3,000 euros
+${WHY ELECTED}          Perusluonteeltani olen harkitseva ja analyyttinen ja innostun helposti uusista innovaatioista. Ajattelen asioita monelta eri puolelta ja pyrin myös löytämään ratkaisuja, jotka eivät ole niin suoraviivaisia. Eduskuntaan pystyisin tuomaan näkemystä tietotekniikan kehittymisestä ja sen tuomista hyödyistä. Lisäksi pyrin ratkaisuihin, jotka säästävät veronmaksajien rahoja ja parantavat yritysten toimintakykyä.
+${ELECTION STATUS}      NOT ELECTED
+${VOTES}                1288
+${COMPARATIVE INDEX}    3334.269
+
+*** Test Cases ***
+#TC_1_vaalikone
+Question Page Loads
+    Maximize Browser Window
+    Wait Until Element Is Visible   xpath:/html/body/div/div/div[2]/a[1]/img
+    Click Element                   xpath:/html/body/div/main/div[1]/section/div[2]/input
+    Click Element                   xpath:/html/body/div/main/div[1]/section/div[2]/div/a[1]
+    Click Button                    xpath:/html/body/div/main/div[1]/section/button
+    Page Should Contain             Suomen pitää olla edelläkävijä ilmastonmuutoksen vastaisessa taistelussa
+
+#TC_2_vaalikone
+Navigate To A Candidate Profile
+    Go to                           https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/section/a
+    Click Element                   xpath:/html/body/div/main/div[1]/section/a
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/div/div[3]/div[1]/div/div/div[2]/section/div/div[1]/a[2]
+    Click Link                      xpath:/html/body/div/main/div[1]/div/div[3]/div[1]/div/div/div[2]/section/div/div[1]/a[2]
+
+#TC_3_vaalikone
+Navigate To Privacy Statement
+    Wait Until Element Is Visible   xpath:/html/body/div/div/div[1]/div/a[2]
+    Click Link                      xpath:/html/body/div/div/div[1]/div/a[2]
+
+#TC_4_vaalikone
+Return To Main Page From Candidate Profile
+    Go To                           https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/section/a
+    Click Button                    xpath:/html/body/div/div/div[1]/button[3]
+    Click Link                      xpath:/html/body/div/div/div[1]/div/a[1]
+
+#TC_5_vaalikone
+Start To Vaalikone And Choose Municipality
+   Go To                            https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+   Wait Until Page Contains         Tervetuloa Ylen vaalikoneeseen
+   Click Element                    xpath:/html/body/div/main/div[1]/section/button
+   Input Text                       xpath:/html/body/div/main/div[1]/section/div[2]/input   ${MUNICIPALITY}
+   Textfield Should Contain         xpath:/html/body/div/main/div[1]/section/div[2]/input   ${MUNICIPALITY}
+   Click Button                     xpath:/html/body/div/main/div[1]/section/button 
+   
+#TC_6_vaalikone
+Start To Vaalikone And Write Your Municipality
+   Go To                            https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+   Wait Until Page Contains         Tervetuloa Ylen vaalikoneeseen
+   Click Element                    xpath:/html/body/div/main/div[1]/section/div[2]/input
+   Input Text                       xpath:/html/body/div/main/div[1]/section/div[2]/input   Vantaa  
+
+#TC_7_vaalikone
+Main Page Language (Swedish, English, Russian)
+   Go To                            https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI 
+   Wait Until Element Is Visible    xpath:/html/body/div/main/div[1]/section/a
+   Click Button                     xpath:/html/body/div/div/div[1]/button[2]
+   Click Button                     xpath:/html/body/div/div/div[1]/button[3]
+   Click Button                     xpath:/html/body/div/div/div[1]/button[4]
+
+*** Test Cases ***
+#TC_8_vaalikone
+Candidate Information Visible And Correct
+    Go To                           https://vaalikone.yle.fi/eduskuntavaali2019/2/ehdokkaat/886?lang=en
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[1]/p
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[1]/p     ${ELECTORAL DISTRICT}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[2]/p     ${CANDIDATE NUMBER}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[3]/p     ${AGE}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[4]/p     ${LANGUAGE}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[5]/p     ${OCCUPATION}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[6]/p     ${EDUCATION}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[7]/p     ${POLITICAL IDOL}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[8]/p     ${ELECTION BUDGET}
+    Element Should Contain          xpath:/html/body/div/main/div[1]/div/section[1]/div[5]/div/pre      ${WHY ELECTED}
+
+#TC_9_vaalikone
+Election Status Visible And Correct
+    Go To                           https://vaalikone.yle.fi/eduskuntavaali2019/2/ehdokkaat/886?lang=en
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[1]/p
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[2]/div[1]                   ${ELECTION STATUS}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[2]/div[2]/div[1]/span[2]    ${VOTES}
+    Element Text Should Be          xpath:/html/body/div/main/div[1]/div/section[1]/div[2]/div[2]/div[2]/span[2]    ${COMPARATIVE INDEX}
+
+#TC_10_vaalikone
+Social Media Links Visible And Correct
+    Go To                           https://vaalikone.yle.fi/eduskuntavaali2019/2/ehdokkaat/886?lang=en
+    Wait Until Element Is Visible   xpath:/html/body/div/main/div[1]/div/section[1]/div[4]/div[1]/p
+    Page Should Contain Link        https://www.facebook.com/PiiaAallonharjaPS/
+    Page Should Contain Link        https://www.instagram.com/piia_aallonharja/
+    Page Should Contain Link        https://twitter.com/PiiaAallonharja

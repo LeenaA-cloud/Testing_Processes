@@ -1,0 +1,32 @@
+*** Settings ***
+Library   SeleniumLibrary
+
+*** Variables ***
+${Kunta}   Akaa
+
+*** Test Cases ***
+#TC_5_vaalikone
+Start to vaalikone and choose municipality
+   Open Browser   https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+   Maximize browser window 
+   Click element   xpath:/html/body/div/main/div[1]/section/button
+   Input text   xpath:/html/body/div/main/div[1]/section/div[2]/input   ${Kunta}
+   Textfield should contain   xpath:/html/body/div/main/div[1]/section/div[2]/input   ${Kunta}
+   Click button   xpath:/html/body/div/main/div[1]/section/button   
+   
+#TC_6_vaalikone
+Start to vaalikone and write your municipality
+   Open Browser   https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+   Maximize browser window 
+   click element   xpath:/html/body/div/main/div[1]/section/div[2]/input
+   Input text   xpath:/html/body/div/main/div[1]/section/div[2]/input   Vantaa
+  
+
+#TC_7_vaalikone
+Mane page language (Swedish, English, Russian)
+   Open browser   https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+   Maximize browser window 
+   Wait Until Element is visible   xpath:/html/body/div/main/div[1]/section/a
+   Click button   xpath:/html/body/div/div/div[1]/button[2]
+   Click button   xpath:/html/body/div/div/div[1]/button[3]
+   Click button   xpath:/html/body/div/div/div[1]/button[4]  

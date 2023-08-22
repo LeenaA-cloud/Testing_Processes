@@ -1,0 +1,73 @@
+
+*** Settings ***
+Library   SeleniumLibrary
+Library   OperatingSystem
+Library   Dialogs
+Suite Setup   Open Browser   https://vaalikone.yle.fi/eduskuntavaali2019?lang=fi-FI
+Suite Teardown   Close Browser
+
+*** Variables ***
+${OriginalShotDir}   C:/RobotLab/Visual_testing/harriaalto_original
+${TestShotDir}   C:/RobotLab/Visual_testing/harriaalto_testshot
+${fontcolor}   rgb(74, 74, 74)
+${color}   rgb(245, 166, 35)
+${fontFamily}   "Roboto", sans-serif
+${fontSize}   20px
+
+*** Test Cases ***
+#1
+Navigate to Candidate Profile 
+    Wait until page contains   Tervetuloa Ylen vaalikoneeseen!
+    Click link   xpath:/html/body/div/main/div[1]/section/a
+    Wait until page contains   Harri Aalto
+    Click link   xpath:/html/body/div/main/div[1]/div/div[3]/div[1]/div/div/div[3]/section/div/div[1]/a[2]
+    Sleep   5 s
+Compare Original Profile Picture To Screenshot
+    Set screenshot directory   ${TestShotDir}
+    Capture element screenshot   css:html body div#root main div.constituencyroute__MainWrapper-sc-1cmvtcm-0.bBopNv div.candidatepage__Container-tjvm5y-10.kvZixK section.card__Card-jgylk6-1.kZXFax img.CandidateImage-sc-50x8nr-0.jXMapJ
+    ${diffvalue}=   Run and return rc and output   magick ${OriginalShotDir}/harriaalto_1.png ${TestShotDir}/selenium-element-screenshot-1.png -metric RMSE -compare -format "%[distortion]" info:
+    ${diffvalue}=   Set variable   ${diffvalue}[1]
+    Run keyword if   ${diffvalue}>0   Run   magick ${OriginalShotDir}/harriaalto_1.png ${TestShotDir}/selenium-element-screenshot-1.png -metric RMSE -compare ${TestShotDir}/difference.png
+    Run keyword and ignore error   Should be equal  ${diffvalue}  0
+
+*** Test Cases ***
+#2
+Navigate To Question Page
+    Wait until page contains   Tervetuloa Ylen vaalikoneeseen!
+    Click element   xpath:/html/body/div/main/div[1]/section/div[2]/input
+    Wait until page contains   Akaa
+    Click link   xpath:/html/body/div/main/div[1]/section/div[2]/div/a[1]
+    Click button   xpath:/html/body/div/main/div[1]/section/button
+Check Font Color Questions 1-5 
+   ${count}=   Get element count   xpath:/html/body/div/main/div[1]/div/article[1]/section[*]
+   set global variable   ${count}
+   ${attribute name}=   set variable   color
+   FOR   ${INDEX}   IN RANGE   1   ${count}+1
+      ${element}=   Get webelement   xpath:/html/body/div/main/div[1]/div/article[1]/section[${INDEX}]
+      ${prop_val}=   Call Method   ${element}   value_of_css_property   ${attribute name}
+      should be equal   ${prop_val}   ${fontcolor}     
+   END
+Check Font Of Questions 1-5
+   ${attribute name}=   set variable   font-family
+   FOR   ${INDEX}   IN RANGE   1   ${count}+1
+      ${element}=   Get webelement   xpath:/html/body/div/main/div[1]/div/article[1]/section[*]
+      ${prop_val}=   Call Method   ${element}   value_of_css_property   ${attribute name}   
+      Should be equal   ${prop_val}   ${fontFamily}     
+   END
+
+*** Test Cases ***
+#3
+Navigate To Question Page
+    Wait until page contains   Tervetuloa Ylen vaalikoneeseen!
+    Click element   xpath:/html/body/div/main/div[1]/section/div[2]/input
+    Wait until page contains   Akaa
+    Click link   xpath:/html/body/div/main/div[1]/section/div[2]/div/a[1]
+    Click button   xpath:/html/body/div/main/div[1]/section/button
+Check Background Color Of Questions 1-5   
+    Wait Until Page Contains     Suomen ei pidä kiirehtiä kieltämään uusien bensa- ja dieselautojen myyntiä
+    ${colorToCompare}=   Set Variable   background-color
+    FOR  ${INDEX}  IN RANGE  1  6
+        ${element}=   Get WebElement   xpath:/html/body/div/main/div[1]/div/article[1]/section[${INDEX}]/div/div[1]
+        ${propVal}=   Call Method   ${element}   value_of_css_property   ${colorToCompare}
+        Should Be Equal   ${propVal}   ${color}
+    END

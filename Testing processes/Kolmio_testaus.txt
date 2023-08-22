@@ -1,0 +1,63 @@
+##Leena Pasanen 
+C:/Python/kolmiot.py
+def tasasivuinenkolmio (sivu1,sivu2,sivu3):
+    if sivu1==sivu2 and sivu2==sivu3 and sivu1 == sivu3:
+        return ("Tasasivuinen kolmio")
+    else:
+        return ("Jokin meni vikaan.")
+
+def tasakylkinenkolmio (sivu1,sivu2,sivu3):
+    if sivu1 == sivu2 or sivu2 == sivu3 or sivu1 == sivu3:
+        return ("Tasakylkinen kolmio")
+    else:
+        return ("Jokin meni vikaan.")
+
+def epasaannollinenkolmio (sivu1,sivu2,sivu3):
+    if sivu1!= sivu2 and sivu2 != sivu3 and sivu1 != sivu3:
+        return ("Epäsäännöllinen kolmio")
+    else:
+        return ("Jokin meni vikaan.") 
+
+c:/Python/kolmiotTest.py
+import kolmiot
+import unittest
+
+class MyTest (unittest.TestCase):
+    def test_sivutArea1_1_1_RepbyTasasivuinenKolmio(self):
+            ##Arrange
+            sivu1 = int(1)
+            sivu2 = int(1)
+            sivu3 = int(1)
+            ##Act
+            response = kolmiot.tasasivuinenkolmio(sivu1,sivu2,sivu3)
+            ##Assert
+            self.assertEqual("Tasasivuinen kolmio", response)
+
+    def test_sivutArea1_1_3_RepbyTasakylkinenKolmio(self):
+            ##Arrange
+            sivu1 = int(1)
+            sivu2 = int(3)
+            sivu3 = int(3)
+            ##Act
+            response = kolmiot.tasakylkinenkolmio(sivu1,sivu2,sivu3)
+            ##Assert
+            self.assertEqual("Tasakylkinen kolmio", response)
+    def test_sivutArea1_1_1_RepbyepasaannollinenKolmio(self):
+            ##Arrange
+            sivu1 = int(1)
+            sivu2 = int(2)
+            sivu3 = int(3)
+            ##Act
+            response = kolmiot.epasaannollinenkolmio(sivu1,sivu2,sivu3)
+            ##Assert
+            self.assertEqual("Epäsäännöllinen kolmio", response)
+
+if __name__ == '__main__':
+        unittest.main()
+
+
+Tarvitaan 6 testitapausta, että voidaan todentaa, että testikattavuus voidaan katsoa olevan riittävällä tasolla.
+Jokaista tulisi testata kaksi kertaa. 
+
+
+

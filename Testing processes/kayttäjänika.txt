@@ -1,0 +1,50 @@
+##Leena Pasanen
+Video linkki:
+https://drive.google.com/file/d/1F04TBIGKlMSnl5fif92cENIv0SYlDVBi/view?usp=drive_link
+
+def lapsi(ika):
+    if ika >=0 and ika < 18:
+        return("Olet lapsi.")
+    else:
+        return ("Jokin meni vikaan.")
+
+def aikuinen(ika):
+    if ika >=18 and ika < 70:
+        return ("Olet aikuinen.")
+    else:
+        return ("Jokin meni vikaan.")
+
+def elakelainen(ika):
+    if ika >=70:
+        return ("Olet elakelainen.")
+    else:
+        return ("Jokin meni vikaan.")
+
+import unittest
+import kayttajaika
+
+class KayttajaikaTest(unittest.TestCase):
+    def test_TestaaOnkoKayttajaIkaAlle18vuotta_VastausOletLapsi(self):
+        ##Arrange
+        ika = int (2)
+        ##Act
+        response =kayttajaika.lapsi(ika)
+        ##Assert
+        self.assertEqual("Olet lapsi.",response)
+    def test_TestaaOnkoKayttajaIkaalle70_VastausOletAikuinen(self):
+        ##Arrange
+        ika = int (69)
+        ##Act
+        response =kayttajaika.aikuinen(ika)
+        ##Assert
+        self.assertEqual("Olet aikuinen.",response)
+    def test_TestaaOnkoKayttajaIkayli70vuotta_VastausOletElakelainen(self):
+        ##Arrange
+        ika = int (70)
+        ##Act
+        response =kayttajaika.elakelainen(ika)
+        ##Assert
+        self.assertEqual("Olet elakelainen.",response)
+
+if __name__ == '__main__':
+        unittest.main()
